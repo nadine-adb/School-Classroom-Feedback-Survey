@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Info</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-image: url('notebook.jpg');
+            background-position: center;
+            background-size: cover;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('notebook.jpg');
+            background-size: cover;
+            background-position: center;
+            filter: blur(5px);
+            z-index: -1;
+        }
+
+        .container {
+            text-align: center;
+            background-color: #f8f1e4;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); 
+            width: 100%;
+            max-width: 400px;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        .inner-container {
+            background: #fffaf0;
+            padding: 20px;
+            border: 2px solid #000;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .main-header {
+            font-size: 1.8em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            animation: slideIn 1.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes slideIn {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        label {
+            font-size: 1em;
+            font-weight: 500;
+            display: block;
+            margin-top: 10px;
+            text-align: left;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .submit-button, .back-button {
+            padding: 10px 15px;
+            font-size: 1em;
+            background-color: #d2b48c;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            background-color: #d2b48c;
+        }
+
+        .submit-button:hover, .back-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-container {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <p class="main-header">STUDENT INFO</p>
+        <div class="inner-container">
+        <div class="form-container">
+            <h2>Student Info</h2>
+            <form action="teachers-list.html" method="GET">
+                <label for="fname">First name:</label>
+                <input type="text" id="fname" name="fname" placeholder="Enter Your First Name" required>
+
+                <label for="lname">Last name:</label>
+                <input type="text" id="lname" name="lname" placeholder="Enter Your Last Name" required>
+
+                <label for="mname">Middle name:</label>
+                <input type="text" id="mname" name="mname" placeholder="Enter Your Middle Name" required>
+
+                <div class="form-group">
+                    <label for="grade-and-section">Grade and Section:</label>
+                    <select id="grade-and-section" name="grade-and-section" required>
+                        <option value="">Select your Grade and Section</option>
+                        <optgroup label="Grade 11">
+                            <option value="11-APOLLO" data-grade="11">11 - APOLLO</option>
+                            <option value="11-RANKINE" data-grade="11">11 - RANKINE</option>
+                            <option value="11-DIVINE" data-grade="11">11 - DIVINE</option>
+                            <option value="11-ASSETS" data-grade="11">11 - ASSETS</option>
+                            <option value="11-DEMETER" data-grade="11">11 - DEMETER</option>
+                            <option value="11-EON" data-grade="11">11 - EON</option>
+                            <option value="11-ATHENA" data-grade="11">11 - ATHENA</option>
+                            <option value="11-FORD" data-grade="11">11 - FORD</option>
+                            <option value="11-CONFUCIUS" data-grade="11">11 - CONFUCIUS</option>
+                            <option value="11-AQUINAS" data-grade="11">11 - AQUINAS</option>
+                        </optgroup>
+                        <optgroup label="Grade 12">
+                            <option value="12-AURORA" data-grade="12">12 - AURORA</option>
+                            <option value="12-KELVIN" data-grade="12">12 - KELVIN</option>
+                            <option value="12-GRACE" data-grade="12">12 - GRACE</option>
+                            <option value="12-BALANCE" data-grade="12">12 - BALANCE</option>
+                            <option value="12-DODGE" data-grade="12">12 - DODGE</option>
+                            <option value="12-CERES" data-grade="12">12 - CERES</option>
+                            <option value="12-CHEVROLET" data-grade="12">12 - CHEVROLET</option>
+                            <option value="12-HERMES" data-grade="12">12 - HERMES</option>
+                            <option value="12-GARDNER" data-grade="12">12 - GARDNER</option>
+                            <option value="12-MARX" data-grade="12">12 - MARX</option>
+                        </optgroup>
+                    </select>
+                </div>
+                
+              
+                <input type="hidden" id="grade-level" name="grade-level" value="">
+                
+                <div class="button-container">
+                    <button type="button" class="back-button" onclick="window.history.back();">Back</button>
+          
+                    <button type="submit" class="submit-button">Next</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // get the grade level from the selected section
+    document.getElementById('grade-and-section').addEventListener('change', function() {
+        const selectedOption = this.options[this.selectedIndex];
+        const gradeLevel = selectedOption.getAttribute('data-grade');
+        document.getElementById('grade-level').value = gradeLevel;
+    });
+</script>
+</body>
+</html>
+
