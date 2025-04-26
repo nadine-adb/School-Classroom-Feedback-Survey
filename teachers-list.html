@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Selection</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url('notebook.jpg');
+            background-position: center;
+            background-size: cover;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('notebook.jpg');
+            background-size: cover;
+            background-position: center;
+            filter: blur(5px);
+            z-index: -1;
+        }
+
+        .container {
+            background: white;
+            background-color: #f8f1e4;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        .inner-container {
+            background: #fffaf0;
+            padding: 20px;
+            border: 2px solid #000;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .main-header {
+            font-size: 1.8em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            animation: slideIn 1.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes slideIn {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        label, select {
+            display: block;
+            margin-top: 15px;
+            font-size: 1em;
+            width: 100%;
+            text-align: left;
+        }
+
+        select {
+            display: block;
+            margin: 10px auto; 
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%; 
+            text-align: left; 
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .submit-button, .back-button {
+            padding: 10px 15px;
+            font-size: 1em;
+            background-color: #d2b48c;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-button {
+            background-color: #d2b48c;
+        }
+
+        .submit-button:hover, .back-button:hover {
+            background-color: #d2b48c;
+            transform: scale(1.05);
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-container {
+            margin-top: 10px;
+        }
+
+        .student-info {
+            background-color: #f0e6d2;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-align: left;
+            font-size: 0.9em;
+        }
+
+        .student-info p {
+            margin: 5px 0;
+        }
+
+        .student-info .label {
+            font-weight: bold;
+            color: #8b7355;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Teacher Selection</h2>
+        <div class="inner-container">
+            <div class="student-info">
+                <p><span class="label">Student:</span> <span id="studentName">-</span></p>
+                <p><span class="label">Grade & Section:</span> <span id="gradeSection">-</span></p>
+            </div>
+            
+            <form action="form.html" method="GET">
+                <label for="strand">Select Strand:</label>
+                <select id="strand" name="strand" required>
+                    <option value="">Choose your strand</option>
+                    <!-- strands will be filtered based on grade level -->
+                </select>
+
+                <label for="teacher">Select Teacher:</label>
+                <select id="teacher" name="teacher" required>
+                    <option value="">Choose your teacher</option>
+                </select>
+
+                <input type="hidden" id="selectedSubject" name="selectedSubject" value="">
+                <input type="hidden" id="selectedTeacherName" name="selectedTeacherName" value="">
+                <input type="hidden" id="studentFullName" name="studentFullName" value="">
+                <input type="hidden" id="studentGradeSection" name="studentGradeSection" value="">
+                
+                <!-- pass all student info to the next page -->
+                <input type="hidden" id="fname" name="fname" value="">
+                <input type="hidden" id="lname" name="lname" value="">
+                <input type="hidden" id="mname" name="mname" value="">
+
+                <div class="button-container">
+                    <button type="button" class="back-button" onclick="window.history.back()">Back</button>
+                    <button type="submit" class="submit-button">Next</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // teacher data organized by strand and grade level
+        const teacherData = {
+            "STEM11": {
+                "Mr. Joseph Yu": ["Pre-calculus"],
+                "Ms. Christine Gomez": ["General Mathematics", "Earth Science"],
+                "Ms. Joy Catalina": ["General Chemistry"],
+                "Mr. Vince De Guzman": ["Oral Communication in Context"],
+                "Ms. Joan E. Hapa": ["Practical Research 1"]
+            },
+            "STEM12": {
+                "Mr. Raymond Lopez": ["Personal Development", "Entrepreneurship"],
+                "Ms. Joy Catalina": ["General Physics 1"],
+                "Mrs. Remegia R. Dayanghirang": ["General Biology 1"],
+                "Ms. Josephine E. Pura": ["Introduction to Philosophy of the Human Person"],
+                "Ms. Joan E. Hapa": ["Inquiries, Inverstigation, and Immersion"]
+            },
+            "ABM11": {
+                "Mrs. Mika S. Manalo": ["Oral Communication in Context"],
+                "Ms. Joan E. Hapa": ["General Mathematics"],
+                "Mrs. Remegia R. Dayanghirang": ["Earth and Life Science"],
+                "Mr. Raymond Lopez": ["Understanding Culture, Society and Politics"],
+                "Ms. Josephine E. Pura": ["Research in Daily Life 1"],
+                "Ms. Joy Catalina": ["English for Academic and Professional Purposes"]
+            },
+            "ABM12": {
+                "Mrs. Mika S. Manalo": ["Applied Economics"],
+                "Ms. Joy Catalina": ["Business Ethics and Social Responsibility"],
+                "Mr. Vince De Guzman": ["Fundamentals of Accountancy, Business and Management 1", "Fundamentals of Accountancy, Business and Management 2"],
+                "Ms. Joan E. Hapa": ["Business Finance"],
+                "Ms. Christine Gomez": ["Practical Research 1"]
+            },
+            "TVL11": {
+                "Mrs. Remegia R. Dayanghirang": ["General Mathematics"],
+                "Mrs. Hazel Anne F. Rabago": ["Physical Education and Health", "Bread and Pastry Production"],
+                "Mrs. Nadine B. Santos": ["Filipino sa Piling Larangan"],
+                "Ms. Josephine E. Pura": ["Oral Communication in Context"],
+                "Mr. Raymond Lopez": ["Tour Guiding Services"]
+            },
+            "TVL12": {
+                "Mrs. Mika S. Manalo": ["Earth and Life Science", "Introduction to the Philosophy of the Human Person"],
+                "Ms. Joan E. Hapa": ["Contemporary Philippine Arts from the Regions"],
+                "Mr. Vince De Guzman": ["Media and Information Literacy"],
+                "Mrs. Hazel Anne F. Rabago": ["Physical Education and Health"],
+                "Mr. Lance A. Tugade": ["Practical Research 2"]
+            },
+            "HUMSS11": {
+                "Mr. Joseph Yu": ["General Mathematics"],
+                "Mrs. Remegia R. Dayanghirang": ["Physical Education and Health"],
+                "Mr. Vince De Guzman": ["Filipino sa Piling Larangan"],
+                "Mrs. Mika S. Manalo": ["Oral Communication in Context"],
+                "Mr. Lance A. Tugade": ["Empowerment Technologies(E-tech): ICT Professional Tracks"],
+                "Mr. John E. Tirso": ["Contemporary Philippine Arts from the Regions"]
+            },
+            "HUMSS12": {
+                "Mrs. Remegia R. Dayanghirang": ["Media and Information Literacy"],
+                "Ms. Christine Gomez": ["Introduction to the Philosophy of the Human Person"],
+                "Ms. Mary Rose G. Encinares": ["Physical Science"],
+                "Mr. Lance A. Tugade": ["Physical Education and Health"],
+                "Mrs. Hazel Anne F. Rabago": ["Creative Writing"],
+                "Mr. John E. Tirso": ["Disciplines and Idea in the Applied Social Sciences"]
+            },
+            "GAS11": {
+                "Mrs. Hazel Anne F. Rabago": ["General Mathematics", "Physical Education and Health"],
+                "Ms. Joan E. Hapa": ["Filipino sa Piling Larangan"],
+                "Mrs. Nadine D. Bagoyoro": ["Oral Communication in Context", "Empowerment Technologies(E-tech): ICT Professional Tracks"],
+                "Mr. Vince De Guzman": ["Contemporary Philippine Arts from the Regions"]
+            },
+            "GAS12": {
+                "Mrs. Remegia R. Dayanghirang": ["Organization and management"],
+                "Ms. Christine Gomez": ["Earth and Life Science"],
+                "Mr. Lance A. Tugade": ["Social science"],
+                "Mrs. Mika S. Manalo": ["Applied economics and organization"],
+                "Mr. Joseph Yu": ["Risk reduction and disaster preparedness", "Work Immersion/Career Advocacy/Culminating Activity"]
+            }
+        };
+
+        // get URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const gradeLevel = urlParams.get('grade-level');
+        const gradeSection = urlParams.get('grade-and-section');
+        const firstName = urlParams.get('fname');
+        const lastName = urlParams.get('lname');
+        const middleName = urlParams.get('mname');
+        
+        // dsisplay student information
+        const studentFullName = `${firstName} ${middleName} ${lastName}`;
+        document.getElementById('studentName').textContent = studentFullName;
+        document.getElementById('gradeSection').textContent = gradeSection || '-';
+        
+      
+        document.getElementById('studentFullName').value = studentFullName;
+        document.getElementById('studentGradeSection').value = gradeSection;
+        document.getElementById('fname').value = firstName;
+        document.getElementById('lname').value = lastName;
+        document.getElementById('mname').value = middleName;
+
+        
+        const strandDropdown = document.getElementById("strand");
+        const teacherDropdown = document.getElementById("teacher");
+        const selectedSubjectInput = document.getElementById("selectedSubject");
+        const selectedTeacherNameInput = document.getElementById("selectedTeacherName");
+
+        
+        function populateStrandsByGrade(grade) {
+           
+            strandDropdown.innerHTML = '<option value="">Choose your strand</option>';
+            
+            if (grade) {
+                const strands = Object.keys(teacherData).filter(strand => strand.includes(grade));
+                strands.forEach(strand => {
+                    const option = document.createElement("option");
+                    option.value = strand;
+                    // Format the display name (e.g., "STEM11" to "STEM")
+                    option.textContent = strand.replace(/\d+$/, "");
+                    strandDropdown.appendChild(option);
+                });
+            }
+        }
+
+       
+        if (gradeLevel) {
+            populateStrandsByGrade(gradeLevel);
+        }
+
+        strandDropdown.addEventListener("change", function() {
+            const selectedStrand = strandDropdown.value;
+            
+            
+            teacherDropdown.innerHTML = '<option value="">Choose your teacher</option>';
+            
+           
+            if (selectedStrand && teacherData[selectedStrand]) {
+                const teachers = Object.keys(teacherData[selectedStrand]);
+                teachers.forEach(teacher => {
+                    const option = document.createElement("option");
+                    option.value = teacher;
+                    option.textContent = teacher;
+                    teacherDropdown.appendChild(option);
+                });
+            }
+        });
+
+        teacherDropdown.addEventListener("change", function() {
+            const selectedStrand = strandDropdown.value;
+            const selectedTeacher = teacherDropdown.value;
+            
+            
+            selectedTeacherNameInput.value = selectedTeacher;
+            
+            
+            if (selectedStrand && selectedTeacher && teacherData[selectedStrand] && teacherData[selectedStrand][selectedTeacher]) {
+                
+                const subjects = teacherData[selectedStrand][selectedTeacher];
+                
+                
+                selectedSubjectInput.value = JSON.stringify(subjects);
+            }
+        });
+    </script>
+</body>
+</html>
+

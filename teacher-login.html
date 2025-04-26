@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Page</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+
+        body {
+            position: relative;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.3)), url('main pic.jpg');
+            background-size: cover;
+            filter: blur(5px);
+            z-index: -1;
+        }
+
+        .main-header {
+            position: relative;
+            z-index: 1;
+            color: black;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 250%;
+            font-weight: 600;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .container {
+            text-align: center;
+            font-size: 150%;
+            font-family: 'Poppins', sans-serif;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            z-index: 1;
+            max-width: 90%;
+            width: 400px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
+            border-radius: 10px;
+            height: 230px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .container:hover {
+            transform: scale(1.02);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .separator-line {
+            border-top: 2px solid rgba(0, 0, 0, 0.3); 
+            margin: 15px auto; 
+            width: 90%;
+        }
+
+        .evaluation-button {
+            padding: 10px 15px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+            background: linear-gradient(45deg, #d2b48c, #c0a08c);
+            color: #000000;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+            border: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            max-width: 90%; /* Ensures it fits within the container */
+        }
+
+        .evaluation-button:hover {
+            background: linear-gradient(45deg, #c0a08c, #d2b48c);
+            transform: scale(1.05);
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .evaluation-button span {
+            display: inline-block;
+            font-size: 1.2em;
+        }
+
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 80%;
+            color: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.1);
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+
+        footer a {
+            color: #d2b48c;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+            color: #c0a08c;
+        }
+
+        /* Teacher Login Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            animation: fadeIn 0.3s;
+        }
+
+        .modal-content {
+            background-color: #f8f1e4;
+            margin: 15% auto;
+            padding: 20px;
+            border: 2px solid #d2b48c;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 400px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+        }
+
+        .modal-header {
+            padding: 10px 0;
+            border-bottom: 1px solid #d2b48c;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 1.5em;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            text-align: left;
+            font-size: 0.9em;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+
+        .login-button {
+            padding: 10px 15px;
+            font-size: 1em;
+            background-color: #d2b48c;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .login-button:hover {
+            background-color: #c0a08c;
+            transform: scale(1.02);
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .error-message {
+            color: #ff3333;
+            font-size: 0.8em;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .teacher-link {
+            margin-top: 15px;
+            font-size: 0.7em;
+            color: #666;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .teacher-link:hover {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <p class="main-header">WELCOME STUDENTS!</p>
+    <div class="container">
+        <p>TEACHERS EVALUATION</p>
+        <div class="separator-line"></div>
+        <a href="student-info.html">
+            <button class="evaluation-button">
+                <span>&#9998;</span> <!-- Pencil Icon -->
+                Evaluate Now
+            </button>
+        </a>
+    </div>
+
+    <!-- Teacher Login Modal -->
+    <div id="teacherLoginModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-header">
+                <h2>Teacher Login</h2>
+            </div>
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" placeholder="Enter username">
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" placeholder="Enter password">
+            </div>
+            <div class="error-message" id="loginError">
+                Invalid username or password. Please try again.
+            </div>
+            <button class="login-button" id="loginButton">Login</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>Designed by DIT 2-2 TEAM 12 | Bagoyoro, Caling, Rabago | <a href="contact.html">Contact Us</a> | <a href="#" id="openTeacherLogin">Teacher Login</a></p>
+    </footer>
+
+    <script>
+       // password and username
+        const teacherCredentials = {
+            username: "teacher",
+            password: "password123"
+        };
+
+       
+        const modal = document.getElementById("teacherLoginModal");
+        const openModalBtn = document.getElementById("openTeacherLogin");
+        const closeBtn = document.getElementsByClassName("close")[0];
+        const loginBtn = document.getElementById("loginButton");
+        const loginError = document.getElementById("loginError");
+
+       
+        openModalBtn.onclick = function() {
+            modal.style.display = "block";
+        }
+
+        //modal for log in
+        closeBtn.onclick = function() {
+            modal.style.display = "none";
+            loginError.style.display = "none";
+            document.getElementById("username").value = "";
+            document.getElementById("password").value = "";
+        }
+
+       
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+                loginError.style.display = "none";
+                document.getElementById("username").value = "";
+                document.getElementById("password").value = "";
+            }
+        }
+
+        
+        loginBtn.onclick = function() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            if (username === teacherCredentials.username && password === teacherCredentials.password) {
+          
+                window.location.href = "Response-table.html";
+            } else {
+               
+                loginError.style.display = "block";
+            }
+        }
+
+      
+        document.getElementById("password").addEventListener("keyup", function(event) {
+            if (event.key === "Enter") {
+                loginBtn.click();
+            }
+        });
+    </script>
+</body>
+</html>
